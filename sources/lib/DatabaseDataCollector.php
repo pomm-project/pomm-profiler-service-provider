@@ -45,12 +45,15 @@ class DatabaseDataCollector extends DataCollector
     public function __construct(Pomm $pomm)
     {
         $this->queries = [];
+        $callable = [$this, 'execute'];
 
         foreach ($pomm->getSessionBuilders() as $name => $builder) {
-            $listener = new Listener('query');
-            $listener->attachAction(array($this, 'execute'));
-
-            $pomm->getSession($name)->registerClient($listener);
+            $pomm->addPostConfiguration($name, function($session) use ($callable) {
+                $session
+                    ->getClientUsingPooler('listener', 'query')
+                    ->attachAction($callable)
+                    ;
+            });
         }
     }
 
@@ -88,13 +91,7 @@ class DatabaseDataCollector extends DataCollector
     /**
      * collect
      *
-     * Prepare data for the collector.
-     *
-     * @access public
-     * @param  Request $request
-     * @param  Response $response
-     * @param  \Exception $exception
-     * @return null
+     * @see DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {

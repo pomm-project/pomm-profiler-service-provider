@@ -52,10 +52,12 @@
                             {{ query.sql|raw }}
                         </code>
                         <div>
-                            <small>
-                                <strong>Parameters</strong>: {{ query.parameters|yaml_encode }} <br />
-                                <strong>Time</strong>: {{ '%0.2f'|format(query.time_ms) }} ms
-                            </small>
+                            <dl>
+                                <dd><strong>Parameters</strong>: {{ query.parameters|yaml_dump }} </dd>
+                                <dd><strong>Time</strong>: {{ '%0.2f'|format(query.time_ms) }} ms </dd>
+                                <dd><strong>Results</strong>: {{ query.result_count }} </dd>
+                                <dd><strong>Entity</strong>: {% if query.flexible_entity is defined %}{{ query.flexible_entity }}{% else %} - {% endif %}</dd>
+                            </dl>
                         </div>
                     </div>
                 </li>

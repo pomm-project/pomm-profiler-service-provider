@@ -9,8 +9,8 @@
  */
 namespace PommProject\Silex\ServiceProvider;
 
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
+use Silex\Application;
+use Silex\ServiceProviderInterface;
 
 use PommProject\Silex\ServiceProvider\DatabaseDataCollector;
 
@@ -24,6 +24,7 @@ use Symfony\Bridge\Twig\Extension\YamlExtension;
  * @package PommServiceProvider
  * @copyright 2014 Grégoire HUBERT
  * @author Jérôme MACIAS
+ * @author Grégoire HUBERT
  * @license X11 {@link http://opensource.org/licenses/mit-license.php}
  * @see ServiceProviderInterface
  */
@@ -34,28 +35,31 @@ class PommProfilerServiceProvider implements ServiceProviderInterface
      *
      * @see ServiceProviderInterface
      */
-    public function register(Container $app)
+    public function register(Application $app)
     {
-        $app->extend('data_collectors', function ($collectors, $app) {
-            $collectors['db'] = function ($app) {
-                return new DatabaseDataCollector($app['pomm']);
-            };
+        $app['data_collectors'] = $app->share(
+            $app->extend(
+                'data_collectors',
+                function ($collectors, $app) {
+                    $collectors['db'] = function () use ($app) {
+                        return new DatabaseDataCollector($app['pomm']);
+                    };
 
-            return $collectors;
-        });
+                    return $collectors;
+                }));
 
         $app['data_collector.templates'] = array_merge(
             $app['data_collector.templates'],
             [['db', '@Pomm/Profiler/db.html.twig']]
         );
 
-        $app['twig'] = $app->extend('twig', function ($twig, $app) {
+        $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
             if (!$twig->hasExtension('yaml')) {
                 $twig->addExtension(new YamlExtension());
             }
 
             return $twig;
-        });
+        }));
 
         $app->extend('twig.loader.filesystem', function ($loader, $app) {
             $loader->addPath($app['pomm.templates_path'], 'Pomm');
@@ -68,5 +72,14 @@ class PommProfilerServiceProvider implements ServiceProviderInterface
 
             return dirname(dirname(dirname($r->getFileName()))).'/views';
         };
+    }
+
+    /**
+     * boot
+     *
+     * @see ServiceProviderInterface
+     */
+    public function boot(Application $app)
+    {
     }
 }
