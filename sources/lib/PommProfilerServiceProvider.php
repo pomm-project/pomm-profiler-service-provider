@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of Pomm's Silex™ ServiceProvider package.
+ * This file is part of Pomm's Silex™ ProfilerServiceProvider package.
  *
  * (c) 2014 Grégoire HUBERT <hubert.greg@gmail.com>
  *
@@ -68,7 +68,7 @@ class PommProfilerServiceProvider implements ServiceProviderInterface
         });
 
         $app['pomm.templates_path'] = function () {
-            $r = new \ReflectionClass('PommProject\Silex\ServiceProvider\DatabaseDataCollector');
+            $r = new \ReflectionClass('PommProject\Silex\ProfilerServiceProvider\DatabaseDataCollector');
 
             return dirname(dirname(dirname($r->getFileName()))).'/views';
         };
