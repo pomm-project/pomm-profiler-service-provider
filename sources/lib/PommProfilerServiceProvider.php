@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PommProject\Silex\ServiceProvider;
+namespace PommProject\Silex\ProfilerServiceProvider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-use PommProject\Silex\ServiceProvider\DatabaseDataCollector;
+use PommProject\Silex\ProfilerServiceProvider\DatabaseDataCollector;
 
 use Symfony\Bridge\Twig\Extension\YamlExtension;
 
@@ -21,7 +21,7 @@ use Symfony\Bridge\Twig\Extension\YamlExtension;
  *
  * Silex ServiceProvider for Pomm profiler.
  *
- * @package PommServiceProvider
+ * @package PommProfilerServiceProvider
  * @copyright 2014 Grégoire HUBERT
  * @author Jérôme MACIAS
  * @author Grégoire HUBERT
