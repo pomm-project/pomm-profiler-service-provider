@@ -10,9 +10,9 @@
         "php": ">=5.4.4",
         "silex/silex": "~2.0@dev",
         "pomm-project/foundation": "2.0.*@dev",
-        "symfony/twig-bridge": "~2.7",
-        "jdorn/sql-formatter": "1.3.*@dev",
-        "symfony/yaml": "~2.7"
+        "symfony/twig-bridge": "~2.5",
+        "jdorn/sql-formatter": "~1.2",
+        "symfony/yaml": "~2.5"
     },
     "suggest": {
         "pomm-project/model-manager": "2.0.*@dev",
@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "PommProject\\Silex\\ServiceProvider\\": "sources/lib"
+            "PommProject\\Silex\\ProfilerServiceProvider\\": "sources/lib"
         }
     },
     "extra": {
