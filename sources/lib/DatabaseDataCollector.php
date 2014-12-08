@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PommProject\Silex\ServiceProvider;
+namespace PommProject\Silex\ProfilerServiceProvider;
 
 use PommProject\Foundation\Listener\Listener;
 use PommProject\Foundation\Session\Session;
@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  *
  * Data collector for the database profiler.
  *
- * @package PommServiceProvider
+ * @package PommProfilerServiceProvider
  * @copyright 2014 Grégoire HUBERT
  * @author Jérôme MACIAS
  * @license X11 {@link http://opensource.org/licenses/mit-license.php}
