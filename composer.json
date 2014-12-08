@@ -1,0 +1,31 @@
+{
+    "name": "pomm-project/pomm-profiler-service-provider",
+    "type": "library",
+    "description":  "Pomm Profiler Service Provider for the Silex microframework.",
+    "keywords": ["silex", "pomm"],
+    "homepage": "http://www.pomm-project.org",
+    "license":  "MIT",
+    "authors":  [ { "name": "Grégoire HUBERT", "email": "hubert.greg@gmail.com" }, { "name": "Jérôme MACIAS", "email": "jerome.macias@gmail.com" } ],
+    "require": {
+        "php": ">=5.4.4",
+        "silex/silex": "~2.0@dev",
+        "pomm-project/foundation": "2.0.*@dev",
+        "symfony/twig-bridge": "~2.7",
+        "jdorn/sql-formatter": "1.3.*@dev",
+        "symfony/yaml": "~2.7"
+    },
+    "suggest": {
+        "pomm-project/model-manager": "2.0.*@dev",
+        "pomm-project/cli": "2.0.*@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "PommProject\\Silex\\ServiceProvider\\": "sources/lib"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    }
+}
