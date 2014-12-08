@@ -85,7 +85,7 @@ class DatabaseDataCollector extends DataCollector
             return;
         }
 
-        $this->queries[] = $data;
+        $this->queries[] = ['sql' => \SqlFormatter::format($data['sql'], true), 'parameters' => $data['parameters']];;
     }
 
     /**
