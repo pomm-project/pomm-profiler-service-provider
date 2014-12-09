@@ -50,7 +50,7 @@
                     <div style="margin-top: 4px" id="queryNo-{{ i }}">
 <small><strong>Parameters</strong>: {{ query.parameters|yaml_dump }} | <strong>Time</strong>: {{ '%0.2f'|format(query.time_ms) }} ms | <strong>Results</strong>: {{ query.result_count }} | <strong>Entity</strong>: {% if query.flexible_entity is defined %}{{ query.flexible_entity }}{% else %} - {% endif %}</small></br />
                         <code id="code-{{ i }}" style="font-size: 14px;">
-                            {{ query.sql|raw }}
+                            {{ query.sql|sql_format|raw }}
                         </code>
                     </div>
                 </li>

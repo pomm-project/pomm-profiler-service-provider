@@ -58,6 +58,8 @@ class PommProfilerServiceProvider implements ServiceProviderInterface
                 $twig->addExtension(new YamlExtension());
             }
 
+            $twig->addFilter(new \Twig_SimpleFilter('sql_format', function($sql) { return \SqlFormatter::format($sql); }));
+
             return $twig;
         }));
 
