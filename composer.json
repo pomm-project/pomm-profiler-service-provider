@@ -12,7 +12,7 @@
         "pomm-project/pomm-service-provider": "dev-silex-1",
         "pomm-project/pomm-symfony-bridge": "2.0.*@dev",
         "symfony/twig-bridge": "~2.5",
-        "jdorn/sql-formatter": "~2.7",
+        "jdorn/sql-formatter": "~1.2",
         "symfony/yaml": "~2.5"
     },
     "suggest": {
