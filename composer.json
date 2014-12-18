@@ -9,7 +9,7 @@
     "require": {
         "php": ">=5.4.4",
         "silex/silex": "~1.0",
-        "pomm-project/pomm-service-provider": "2.0.*@dev",
+        "pomm-project/pomm-service-provider": "dev-silex-1",
         "pomm-project/pomm-symfony-bridge": "2.0.*@dev",
         "symfony/twig-bridge": "~2.5"
     },
