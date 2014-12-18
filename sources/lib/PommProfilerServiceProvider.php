@@ -12,7 +12,7 @@ namespace PommProject\Silex\ProfilerServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-use PommProject\Silex\ProfilerServiceProvider\DatabaseDataCollector;
+use PommProject\SymfonyBridge\DatabaseDataCollector;
 
 use Symfony\Bridge\Twig\Extension\YamlExtension;
 
@@ -70,7 +70,7 @@ class PommProfilerServiceProvider implements ServiceProviderInterface
         });
 
         $app['pomm.templates_path'] = function () {
-            $r = new \ReflectionClass('PommProject\Silex\ProfilerServiceProvider\DatabaseDataCollector');
+            $r = new \ReflectionClass('PommProject\SymfonyBridge\DatabaseDataCollector');
 
             return dirname(dirname(dirname($r->getFileName()))).'/views';
         };
