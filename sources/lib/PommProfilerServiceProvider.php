@@ -11,8 +11,10 @@ namespace PommProject\Silex\ProfilerServiceProvider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Silex\ControllerProviderInterface;
 
 use PommProject\SymfonyBridge\DatabaseDataCollector;
+use PommProject\SymfonyBridge\Controller\PommProfilerController;
 
 use Symfony\Bridge\Twig\Extension\YamlExtension;
 
@@ -27,8 +29,9 @@ use Symfony\Bridge\Twig\Extension\YamlExtension;
  * @author Grégoire HUBERT
  * @license X11 {@link http://opensource.org/licenses/mit-license.php}
  * @see ServiceProviderInterface
+ * @see ControllerProviderInterface
  */
-class PommProfilerServiceProvider implements ServiceProviderInterface
+class PommProfilerServiceProvider implements ServiceProviderInterface, ControllerProviderInterface
 {
     /**
      * register
@@ -74,6 +77,12 @@ class PommProfilerServiceProvider implements ServiceProviderInterface
 
             return dirname(dirname(dirname($r->getFileName()))).'/views';
         };
+
+        $app['pomm_profiler.controller'] = $app->share(function ($app) {
+            return new PommProfilerController($app['url_generator'], $app['profiler'], $app['twig'], $app['pomm']);
+        });
+
+        $app['pomm.mount_prefix'] = '_pomm';
     }
 
     /**
@@ -83,5 +92,22 @@ class PommProfilerServiceProvider implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
+        $app->mount($app['pomm.mount_prefix'], $this->connect($app));
+    }
+
+    public function connect(Application $app)
+    {
+        /*
+        if (!$app['resolver'] instanceof ServiceControllerResolver) {
+            // using RuntimeException crashes PHP?!
+            throw new \LogicException('You must enable the ServiceController service provider to be able to use the PommProfiler.');
+        }*/
+
+        $controllers = $app['controllers_factory'];
+        $controllers->get('/explain/{token}/{index_query}', 'pomm_profiler.controller:explainAction')
+            ->bind('_pomm_profiler_explain')
+            ;
+
+        return $controllers;
     }
 }
