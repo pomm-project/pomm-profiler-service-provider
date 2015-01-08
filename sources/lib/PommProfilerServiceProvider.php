@@ -97,12 +97,6 @@ class PommProfilerServiceProvider implements ServiceProviderInterface, Controlle
 
     public function connect(Application $app)
     {
-        /*
-        if (!$app['resolver'] instanceof ServiceControllerResolver) {
-            // using RuntimeException crashes PHP?!
-            throw new \LogicException('You must enable the ServiceController service provider to be able to use the PommProfiler.');
-        }*/
-
         $controllers = $app['controllers_factory'];
         $controllers->get('/explain/{token}/{index_query}', 'pomm_profiler.controller:explainAction')
             ->bind('_pomm_profiler_explain')
