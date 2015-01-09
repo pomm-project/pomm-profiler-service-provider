@@ -44,7 +44,7 @@ class PommProfilerServiceProvider implements ServiceProviderInterface, Controlle
             $app->extend(
                 'data_collectors',
                 function ($collectors, $app) {
-                    $collectors['db'] = function () use ($app) {
+                    $collectors['pomm'] = function () use ($app) {
                         return new DatabaseDataCollector($app['pomm']);
                     };
 
@@ -53,7 +53,7 @@ class PommProfilerServiceProvider implements ServiceProviderInterface, Controlle
 
         $app['data_collector.templates'] = array_merge(
             $app['data_collector.templates'],
-            [['db', '@Pomm/Profiler/db.html.twig']]
+            [['pomm', '@Pomm/Profiler/db.html.twig']]
         );
 
         $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
