@@ -45,7 +45,7 @@ class PommProfilerServiceProvider implements ServiceProviderInterface, Controlle
                 'data_collectors',
                 function ($collectors, $app) {
                     $collectors['pomm'] = function () use ($app) {
-                        return new DatabaseDataCollector($app['pomm']);
+                        return new DatabaseDataCollector($app['pomm'], $app['stopwatch']);
                     };
 
                     return $collectors;
