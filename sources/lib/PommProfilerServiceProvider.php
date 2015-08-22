@@ -44,10 +44,10 @@ class PommProfilerServiceProvider implements ServiceProviderInterface
             return $collectors;
         });
 
-        $app['data_collector.templates'] = array_merge(
-            $app['data_collector.templates'],
-            [['db', '@Pomm/Profiler/db.html.twig']]
-        );
+        $app['data_collector.templates'] = $app->extend('data_collector.templates', function ($templates) {
+            $templates[] = ['db', '@Pomm/Profiler/db.html.twig'];
+            return $templates;
+        });
 
         $app['twig'] = $app->extend('twig', function ($twig, $app) {
             if (!$twig->hasExtension('yaml')) {
