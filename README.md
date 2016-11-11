@@ -7,8 +7,8 @@
 Add the following requirements in the project's `composer.json` file:
 
 ```
-    "silex/web-profiler": "~1.0",
-    "pomm-project/pomm-profiler-service-provider": "dev-silex-1"
+    "silex/web-profiler": "~2.0",
+    "pomm-project/pomm-profiler-service-provider": "dev-silex-2"
 ```
 
 ## Setup
