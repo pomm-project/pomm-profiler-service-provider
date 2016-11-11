@@ -1,6 +1,6 @@
 # Pomm2 Profiler for Silex micro-framework
 
-![Pomm profiler in Silex 1.x](http://www.pomm-project.org/images/profiler.png)
+![Pomm profiler in Silex 2.x](screenshot.png)
 
 ## Install
 
