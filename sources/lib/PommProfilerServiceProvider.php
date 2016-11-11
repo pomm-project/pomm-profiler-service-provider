@@ -14,6 +14,7 @@ use Silex\ServiceProviderInterface;
 use Silex\ControllerProviderInterface;
 
 use PommProject\SymfonyBridge\DatabaseDataCollector;
+use PommProject\SymfonyBridge\Configurator\DatabaseCollectorConfigurator;
 use PommProject\SymfonyBridge\Controller\PommProfilerController;
 
 use Symfony\Bridge\Twig\Extension\YamlExtension;
@@ -40,16 +41,21 @@ class PommProfilerServiceProvider implements ServiceProviderInterface, Controlle
      */
     public function register(Application $app)
     {
-        $app['data_collectors'] = $app->share(
-            $app->extend(
-                'data_collectors',
-                function ($collectors, $app) {
-                    $collectors['pomm'] = function () use ($app) {
-                        return new DatabaseDataCollector($app['pomm'], $app['stopwatch']);
-                    };
+        $app['pomm.data_collector'] = $app->share(function () use ($app) {
+            return new DatabaseDataCollector(null, $app['stopwatch']);
+        });
 
-                    return $collectors;
-                }));
+        $app['pomm.data_collector.configurator'] = function () use ($app) {
+            return new DatabaseCollectorConfigurator($app['pomm.data_collector']);
+        };
+
+        $app['data_collectors'] = $app->share($app->extend('data_collectors', function ($collectors, $app) {
+            $collectors['pomm'] = $app->share(function () use ($app) {
+                return $app['pomm.data_collector'];
+            });
+
+            return $collectors;
+        }));
 
         $app['data_collector.templates'] = array_merge(
             $app['data_collector.templates'],
