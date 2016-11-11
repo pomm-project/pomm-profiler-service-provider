@@ -9,9 +9,12 @@
  */
 namespace PommProject\Silex\ProfilerServiceProvider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+
 use Silex\Application;
-use Silex\ServiceProviderInterface;
-use Silex\ControllerProviderInterface;
+use Silex\Api\BootableProviderInterface;
+use Silex\Api\ControllerProviderInterface;
 
 use PommProject\SymfonyBridge\DatabaseDataCollector;
 use PommProject\SymfonyBridge\Configurator\DatabaseCollectorConfigurator;
@@ -32,37 +35,38 @@ use Symfony\Bridge\Twig\Extension\YamlExtension;
  * @see ServiceProviderInterface
  * @see ControllerProviderInterface
  */
-class PommProfilerServiceProvider implements ServiceProviderInterface, ControllerProviderInterface
+class PommProfilerServiceProvider implements ServiceProviderInterface, ControllerProviderInterface, BootableProviderInterface
 {
     /**
      * register
      *
      * @see ServiceProviderInterface
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['pomm.data_collector'] = $app->share(function () use ($app) {
+        $app['pomm.data_collector'] = function () use ($app) {
             return new DatabaseDataCollector(null, $app['stopwatch']);
-        });
+        };
 
         $app['pomm.data_collector.configurator'] = function () use ($app) {
             return new DatabaseCollectorConfigurator($app['pomm.data_collector']);
         };
 
-        $app['data_collectors'] = $app->share($app->extend('data_collectors', function ($collectors, $app) {
-            $collectors['pomm'] = $app->share(function () use ($app) {
+        $app->extend('data_collectors', function ($collectors, $app) {
+            $collectors['pomm'] = function () use ($app) {
                 return $app['pomm.data_collector'];
-            });
+            };
 
             return $collectors;
-        }));
+        });
 
-        $app['data_collector.templates'] = array_merge(
-            $app['data_collector.templates'],
-            [['pomm', '@Pomm/Profiler/db.html.twig']]
-        );
+        $app->extend('data_collector.templates', function ($templates) {
+            $templates[] = ['pomm', '@Pomm/Profiler/db.html.twig'];
 
-        $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
+            return $templates;
+        });
+
+        $app->extend('twig', function ($twig, $app) {
             if (!$twig->hasExtension('yaml')) {
                 $twig->addExtension(new YamlExtension());
             }
@@ -70,7 +74,7 @@ class PommProfilerServiceProvider implements ServiceProviderInterface, Controlle
             $twig->addFilter(new \Twig_SimpleFilter('sql_format', function($sql) { return \SqlFormatter::format($sql); }));
 
             return $twig;
-        }));
+        });
 
         $app->extend('twig.loader.filesystem', function ($loader, $app) {
             $loader->addPath($app['pomm.templates_path'], 'Pomm');
@@ -84,9 +88,9 @@ class PommProfilerServiceProvider implements ServiceProviderInterface, Controlle
             return dirname(dirname(dirname($r->getFileName()))).'/views';
         };
 
-        $app['pomm_profiler.controller'] = $app->share(function ($app) {
+        $app['pomm_profiler.controller'] = function ($app) {
             return new PommProfilerController($app['url_generator'], $app['profiler'], $app['twig'], $app['pomm']);
-        });
+        };
 
         $app['pomm.mount_prefix'] = '_pomm';
     }
@@ -105,8 +109,7 @@ class PommProfilerServiceProvider implements ServiceProviderInterface, Controlle
     {
         $controllers = $app['controllers_factory'];
         $controllers->get('/explain/{token}/{index_query}', 'pomm_profiler.controller:explainAction')
-            ->bind('_pomm_profiler_explain')
-            ;
+            ->bind('_pomm_profiler_explain');
 
         return $controllers;
     }
