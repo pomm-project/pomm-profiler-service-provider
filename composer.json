@@ -10,14 +10,14 @@
         "php": ">=5.4.4",
         "silex/web-profiler": "~2.0",
         "pomm-project/pomm-service-provider": "dev-silex-2",
-        "pomm-project/pomm-symfony-bridge": "2.0.*@dev",
+        "pomm-project/pomm-symfony-bridge": "~2.0",
         "symfony/twig-bridge": "~2.5",
         "jdorn/sql-formatter": "~1.2",
         "symfony/yaml": "~2.5"
     },
     "suggest": {
-        "pomm-project/model-manager": "2.0.*@dev",
-        "pomm-project/cli": "2.0.*@dev"
+        "pomm-project/model-manager": "~2.0",
+        "pomm-project/cli": "~2.0"
     },
     "autoload": {
         "psr-4": {
