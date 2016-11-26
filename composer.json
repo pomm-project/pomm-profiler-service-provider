@@ -11,9 +11,9 @@
         "silex/web-profiler": "~2.0",
         "pomm-project/pomm-service-provider": "dev-silex-2",
         "pomm-project/pomm-symfony-bridge": "~2.0",
-        "symfony/twig-bridge": "~2.5",
+        "symfony/twig-bridge": "~2.5|~3.0",
         "jdorn/sql-formatter": "~1.2",
-        "symfony/yaml": "~2.5"
+        "symfony/yaml": "~2.5|~3.0"
     },
     "suggest": {
         "pomm-project/model-manager": "~2.0",
